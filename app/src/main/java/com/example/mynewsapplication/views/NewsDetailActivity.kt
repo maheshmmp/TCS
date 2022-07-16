@@ -2,7 +2,9 @@ package com.example.mynewsapplication.views
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.mynewsapplication.R
 import com.example.mynewsapplication.utils.Constants
 import com.example.mynewsapplication.models.Articles
@@ -32,7 +34,7 @@ class NewsDetailActivity : AppCompatActivity() {
     }
 
     private fun setUpNewsLayout(article: Articles) {
-        article.urlToImage?.also { sdvNewsDetailsCover.setImageURI(it) }
+        article.urlToImage?.also { loadImage(it, sdvNewsDetailsCover) }
         article.title?.also { tvNewsDetailsTitle.text = it }
         article.description?.also { tvNewsDetailsDescription.text = it }
         article.publishedAt?.also { tvNewsDetailsPublishedDate.text = getDayFromDate(it) }
@@ -40,6 +42,13 @@ class NewsDetailActivity : AppCompatActivity() {
         article.content?.also {
             tvNewsDetailsOtherData.text = it
         }
+    }
+
+    private fun loadImage(id: String?, productImage: ImageView) {
+        Glide.with(productImage.context).load(id)
+            .placeholder(R.color.light_cyan)
+            .error(R.color.light_coral).fitCenter()
+            .into(productImage)
     }
 
     private fun getDayFromDate(dateValue: String): String {

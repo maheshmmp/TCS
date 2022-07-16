@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.mynewsapplication.apis.APIs
 import com.example.mynewsapplication.database.NewsDatabase
 import com.example.mynewsapplication.models.NewsHeadlines
-import com.example.mynewsapplication.repository.Repo
 import com.example.mynewsapplication.utils.Constants
 import com.example.mynewsapplication.models.Articles
 import com.google.gson.Gson

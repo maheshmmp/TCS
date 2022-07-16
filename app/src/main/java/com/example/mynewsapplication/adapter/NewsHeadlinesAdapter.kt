@@ -5,24 +5,34 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.mynewsapplication.R
 import com.example.mynewsapplication.models.Articles
 import com.example.mynewsapplication.utils.Constants
 import com.example.mynewsapplication.views.NewsDetailActivity
 import kotlinx.android.synthetic.main.item_mix_news.view.*
 import kotlinx.android.synthetic.main.item_news_headline.view.*
-import kotlinx.android.synthetic.main.item_news_headline.view.cvContainer
 import java.text.SimpleDateFormat
 
-class NewsHeadlinesAdapter(private val context: Context, private val newsHeadlines: List<Articles>, private val viewType: Boolean) :
+class NewsHeadlinesAdapter(
+    private val context: Context,
+    private val newsHeadlines: List<Articles>,
+    private val viewType: Boolean
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            TYPE_TOP_HEADLINES -> TypeTopHeadlinesViewHolder(LayoutInflater.from(parent.context).inflate(
-                R.layout.item_news_headline, parent, false))
-            else -> MixNewsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_mix_news, parent, false))
+            TYPE_TOP_HEADLINES -> TypeTopHeadlinesViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_news_headline, parent, false
+                )
+            )
+            else -> MixNewsViewHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_mix_news, parent, false)
+            )
         }
     }
 
@@ -45,14 +55,15 @@ class NewsHeadlinesAdapter(private val context: Context, private val newsHeadlin
         private val tvPublishedDate = itemView.tvPublishedDate!!
         private val cvContainer = itemView.cvContainer!!
         fun bindToView(article: Articles) {
-            article.urlToImage?.also { ivNewsCover.setImageURI(it) }
             article.description?.also { tvNewsDescription.text = it }
             article.publishedAt?.also { tvPublishedDate.text = getDayFromDate(it) }
-
+            article.urlToImage?.also { loadImage(it, ivNewsCover) }
             cvContainer.setOnClickListener {
-                context.startActivity(Intent(context,NewsDetailActivity::class.java).putExtra(
-                    Constants.NEWS_DATA,article
-                ))
+                context.startActivity(
+                    Intent(context, NewsDetailActivity::class.java).putExtra(
+                        Constants.NEWS_DATA, article
+                    )
+                )
             }
         }
     }
@@ -62,15 +73,23 @@ class NewsHeadlinesAdapter(private val context: Context, private val newsHeadlin
         private val sdvMixNewsImg = itemView.sdvMixNewsImg!!
         private val tvMixNewsDate = itemView.tvMixNewsDate!!
         fun bindToView(article: Articles) {
-            article.urlToImage?.also { sdvMixNewsImg.setImageURI(it) }
+            article.urlToImage?.also { loadImage(it, sdvMixNewsImg) }
             article.publishedAt?.also { tvMixNewsDate.text = getDayFromDate(it) }
-
             cvMixNewsContainer.setOnClickListener {
-                context.startActivity(Intent(context, NewsDetailActivity::class.java).putExtra(
-                    Constants.NEWS_DATA,article
-                ))
+                context.startActivity(
+                    Intent(context, NewsDetailActivity::class.java).putExtra(
+                        Constants.NEWS_DATA, article
+                    )
+                )
             }
         }
+    }
+
+    private fun loadImage(id: String?, productImage: ImageView) {
+        Glide.with(productImage.context).load(id)
+            .placeholder(R.color.light_cyan)
+            .error(R.color.light_coral).centerCrop()
+            .into(productImage)
     }
 
     private fun getDayFromDate(dateValue: String): String {

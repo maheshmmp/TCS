@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/ivNewsCover"
             android:layout_width="@dimen/realImage"
             android:layout_height="@dimen/realImage"
