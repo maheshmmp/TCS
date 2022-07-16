@@ -35,6 +35,7 @@ class NewsDetailActivity : AppCompatActivity() {
 
     private fun setUpNewsLayout(article: Articles) {
         article.urlToImage?.also { loadImage(it, sdvNewsDetailsCover) }
+        article.title?.also { toolbar.title = it }
         article.title?.also { tvNewsDetailsTitle.text = it }
         article.description?.also { tvNewsDetailsDescription.text = it }
         article.publishedAt?.also { tvNewsDetailsPublishedDate.text = getDayFromDate(it) }
