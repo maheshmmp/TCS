@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.fragment_news.*
 @AndroidEntryPoint
 class NewsFragment : Fragment(R.layout.fragment_news) {
 
-    //Using HILT
     private val newsViewModel by viewModels<NewsViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

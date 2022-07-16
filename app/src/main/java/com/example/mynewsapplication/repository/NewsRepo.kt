@@ -1,28 +1,16 @@
 package com.example.mynewsapplication.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.mynewsapplication.apis.APIs
-import com.example.mynewsapplication.database.NewsDatabase
-import com.example.mynewsapplication.models.NewsHeadlines
-import com.example.mynewsapplication.utils.Constants
 import com.example.mynewsapplication.models.Articles
-import com.google.gson.Gson
-import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
+import com.example.mynewsapplication.utils.Constants
 import kotlinx.coroutines.*
-import retrofit2.Response
 import retrofit2.Retrofit
 import javax.inject.Inject
 
-class NewsRepo @Inject constructor(private val retrofit: Retrofit, private val context: Context) :
-    Repo() {
+class NewsRepo @Inject constructor(private val retrofit: Retrofit, private val context: Context) {
 
     private val _newsHeadlines: MutableLiveData<List<Articles>> = MutableLiveData()
     var newsHeadlines: LiveData<List<Articles>> = _newsHeadlines

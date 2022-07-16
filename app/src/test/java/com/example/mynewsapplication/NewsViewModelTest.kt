@@ -31,7 +31,6 @@ class NewsViewModelTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-
     @Before
     fun init() {
         MockitoAnnotations.initMocks(this);
@@ -41,14 +40,14 @@ class NewsViewModelTest {
 
     @Test
     fun testNewsDataIsNotNull() {
-        Mockito.`when`(newsRepo.getNewsHeadlinesFromServer()).thenReturn(mockNewsLiveData)
+        Mockito.`when`(newsRepo.newsHeadlines).thenReturn(mockNewsLiveData)
         newsViewModel.newsHeadlines = mockNewsLiveData
         Assert.assertNotNull(newsViewModel.newsHeadlines.value)
     }
 
     @Test
     fun testNewsDataFromRepo() {
-        Mockito.`when`(newsRepo.getNewsHeadlinesFromServer()).thenReturn(mockNewsLiveData)
+        Mockito.`when`(newsRepo.newsHeadlines).thenReturn(mockNewsLiveData)
         newsViewModel.newsHeadlines = mockNewsLiveData
         Assert.assertNotNull(newsViewModel.newsHeadlines.value)
         Assert.assertTrue(newsViewModel.newsHeadlines.value?.size == 3)
