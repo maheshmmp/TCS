@@ -9,18 +9,18 @@ class NewsViewModel @ViewModelInject @Ignore constructor(
     private val repo: NewsRepo
 ) : ViewModel() {
 
-    var showProgressBar = repo.showProgressBar
-
     var newsHeadlines = repo.newsHeadlines
     var error = repo.error
+    var loading = repo.loading
 
     override fun onCleared() {
         super.onCleared()
         repo.onCleared()
     }
 
-    fun getNewsHeadlines() {
-        newsHeadlines = repo.getNewsHeadlinesFromServer()
+    fun getNews() {
+        repo.getAllNews()
     }
+
 }
 

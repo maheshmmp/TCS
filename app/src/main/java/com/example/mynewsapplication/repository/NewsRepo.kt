@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.mynewsapplication.apis.APIs
 import com.example.mynewsapplication.database.NewsDatabase
 import com.example.mynewsapplication.models.NewsHeadlines
@@ -15,6 +16,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
+import retrofit2.Response
 import retrofit2.Retrofit
 import javax.inject.Inject
 
@@ -24,66 +27,27 @@ class NewsRepo @Inject constructor(private val retrofit: Retrofit, private val c
     private val _newsHeadlines: MutableLiveData<List<Articles>> = MutableLiveData()
     var newsHeadlines: LiveData<List<Articles>> = _newsHeadlines
 
+    var job: Job? = null
+    val loading = MutableLiveData<Boolean>()
+
     private val _error: MutableLiveData<String> = MutableLiveData()
     var error: LiveData<String> = _error
 
-    fun getNewsHeadlinesData(): LiveData<List<Articles>> {
-        _showProgressBar.value = true
-
-        disposables.add(
-            Maybe.fromCallable {
-                NewsDatabase.getDatabase(context).newsDao().getNewsHeadlinesFromDB()
-            }.toSingle().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<NewsHeadlines>() {
-                    override fun onSuccess(newsHeadlines: NewsHeadlines) {
-                        Log.d("ComingHere", "inside_onSuccess ${Gson().toJson(newsHeadlines)}")
-                        _newsHeadlines.value = newsHeadlines.articles
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Log.d("ComingHere", "inside_onError ${e.localizedMessage}")
-                        getNewsHeadlinesFromServer()
-                    }
-
-                })
-        )
-        return _newsHeadlines
-    }
-
-    fun getNewsHeadlinesFromServer(): LiveData<List<Articles>> {
+    fun getAllNews() {
         val apis: APIs = retrofit.create(APIs::class.java)
-
-        disposables.add(
-            apis.getNewsHeadlines("us", Constants.API_KEY)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribeWith(object : DisposableSingleObserver<NewsHeadlines>() {
-                    override fun onSuccess(data: NewsHeadlines) {
-                        _newsHeadlines.postValue(data.articles)
-                        saveNewsInDb(context, data)
-                        _showProgressBar.postValue(false)
-                    }
-
-                    override fun onError(throwable: Throwable) {
-                        _error.postValue("Error: ${throwable.localizedMessage}")
-                        _showProgressBar.postValue(false)
-                    }
-                })
-        )
-        return _newsHeadlines
-
+        job = CoroutineScope(Dispatchers.IO).launch {
+            loading.postValue(true)
+            val response = apis.getNewsHeadlinesCoroutine("us", Constants.API_KEY)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _newsHeadlines.postValue(response.body()?.articles)
+                    loading.postValue(false)
+                } else {
+                    _error.postValue("Error: ${response.message()}")
+                    loading.postValue(false)
+                }
+            }
+        }
     }
-
-    private fun saveNewsInDb(context: Context, data: NewsHeadlines) {
-        val news = NewsHeadlines(data.status, data.totalResults, data.articles)
-        Observable.fromCallable {
-            NewsDatabase.getDatabase(context).newsDao()
-                .insertNews(news)
-        }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-    }
-
 
 }

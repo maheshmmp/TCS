@@ -8,8 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mynewsapplication.R
 import com.example.mynewsapplication.adapter.NewsHeadlinesAdapter
-import com.example.mynewsapplication.viewmodels.NewsViewModel
 import com.example.mynewsapplication.models.Articles
+import com.example.mynewsapplication.viewmodels.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_news.*
 
@@ -22,13 +22,25 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModelChanges()
-        newsViewModel.getNewsHeadlines()
+        newsViewModel.getNews()
     }
 
     private fun observeViewModelChanges() {
         newsViewModel.newsHeadlines.observe(viewLifecycleOwner) {
             it?.also {
                 setNews(it)
+            }
+        }
+
+        newsViewModel.loading.observe(viewLifecycleOwner) {
+            it?.also {
+                progress.apply {
+                    visibility = if (it) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+                }
             }
         }
 
