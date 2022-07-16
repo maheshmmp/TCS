@@ -37,6 +37,9 @@ android {
         exclude 'META-INF/atomicfu.kotlin_module'
     }
 
+    hilt {
+        enableTransformForLocalTests = true
+    }
 
     sourceSets {
         main {
@@ -102,21 +105,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 
-
-
     //Room
-    def roomVersion = "2.2.2"
+    def roomVersion = "2.4.0-alpha04"
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
-
-//    ext.dagger2_version = '2.24'
-//    implementation "com.google.dagger:dagger:$dagger2_version"
-//    kapt "com.google.dagger:dagger-compiler:$dagger2_version"
-//    implementation "com.google.dagger:dagger-android:$dagger2_version"
-//    kapt "com.google.dagger:dagger-android-processor:$dagger2_version"
-//    kapt "com.google.dagger:dagger-android-support:$dagger2_version"
-
 
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
     implementation 'org.mockito:mockito-core:3.0.0'

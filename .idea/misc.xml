@@ -4,8 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/160857/Documents/GitHub/TCS/app/src/main/res/layout/activity_main.xml" value="0.2421875" />
+        <entry key="..\:/Users/160857/Documents/GitHub/TCS/app/src/main/res/layout/activity_news_detail.xml" value="0.2421875" />
+        <entry key="..\:/Users/160857/Documents/GitHub/TCS/app/src/main/res/layout/activity_splash_screen.xml" value="0.2421875" />
         <entry key="..\:/Users/160857/Documents/GitHub/TCS/app/src/main/res/layout/content_main.xml" value="0.2421875" />
+        <entry key="..\:/Users/160857/Documents/GitHub/TCS/app/src/main/res/layout/content_news_detail.xml" value="0.2421875" />
+        <entry key="..\:/Users/160857/Documents/GitHub/TCS/app/src/main/res/layout/content_news_detail_enlarged_scene.xml" value="0.264" />
         <entry key="..\:/Users/160857/Documents/GitHub/TCS/app/src/main/res/layout/fragment_news.xml" value="0.21223354958294718" />
+        <entry key="..\:/Users/160857/Documents/GitHub/TCS/app/src/main/res/layout/item_mix_news.xml" value="0.2421875" />
+        <entry key="..\:/Users/160857/Documents/GitHub/TCS/app/src/main/res/layout/item_news_headline.xml" value="0.21203703703703702" />
         <entry key="..\:/Users/160857/Documents/GitHub/TCS/app/src/main/res/layout/item_placeholder_layout.xml" value="0.2421875" />
       </map>
     </option>
