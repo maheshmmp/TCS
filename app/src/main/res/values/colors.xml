@@ -8,9 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="colorPrimary">@color/royal_blue</color>
-    <color name="colorPrimaryDark">@color/cadet_blue</color>
-    <color name="colorAccent">@color/blue_violet</color>
+    <color name="colorPrimary">@color/fire_brick</color>
+    <color name="colorPrimaryDark">@color/indian_red</color>
+    <color name="colorAccent">@color/pink</color>
     <color name="warm_grey">#40787878</color>
     <color name="text_black">#212121</color>
     <color name="colorBg">#ffffff</color>

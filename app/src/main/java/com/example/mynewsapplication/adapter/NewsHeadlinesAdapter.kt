@@ -3,17 +3,17 @@ package com.example.mynewsapplication.adapter
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mynewsapplication.R
+import com.example.mynewsapplication.databinding.ItemMixNewsBinding
+import com.example.mynewsapplication.databinding.ItemNewsHeadlineBinding
 import com.example.mynewsapplication.models.Articles
 import com.example.mynewsapplication.utils.Constants
 import com.example.mynewsapplication.views.NewsDetailActivity
-import kotlinx.android.synthetic.main.item_mix_news.view.*
-import kotlinx.android.synthetic.main.item_news_headline.view.*
 import java.text.SimpleDateFormat
 
 class NewsHeadlinesAdapter(
@@ -26,12 +26,17 @@ class NewsHeadlinesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_TOP_HEADLINES -> TypeTopHeadlinesViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.item_news_headline, parent, false
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.context), R.layout.item_news_headline, parent, false
                 )
             )
             else -> MixNewsViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_mix_news, parent, false)
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.context),
+                    R.layout.item_mix_news,
+                    parent,
+                    false
+                )
             )
         }
     }
@@ -49,16 +54,12 @@ class NewsHeadlinesAdapter(
         return newsHeadlines.size ?: 0
     }
 
-    inner class TypeTopHeadlinesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val ivNewsCover = itemView.ivNewsCover!!
-        private val tvNewsDescription = itemView.tvNewsDescription!!
-        private val tvPublishedDate = itemView.tvPublishedDate!!
-        private val cvContainer = itemView.cvContainer!!
+    inner class TypeTopHeadlinesViewHolder(private val mBinding: ItemNewsHeadlineBinding) :
+        RecyclerView.ViewHolder(mBinding.root) {
         fun bindToView(article: Articles) {
-            article.description?.also { tvNewsDescription.text = it }
-            article.publishedAt?.also { tvPublishedDate.text = getDayFromDate(it) }
-            article.urlToImage?.also { loadImage(it, ivNewsCover) }
-            cvContainer.setOnClickListener {
+            mBinding.item = article
+            article.urlToImage?.also { loadImage(it, mBinding.ivNewsCover) }
+            mBinding.cvContainer.setOnClickListener {
                 context.startActivity(
                     Intent(context, NewsDetailActivity::class.java).putExtra(
                         Constants.NEWS_DATA, article
@@ -68,14 +69,11 @@ class NewsHeadlinesAdapter(
         }
     }
 
-    inner class MixNewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val cvMixNewsContainer = itemView.cvMixNewsContainer!!
-        private val sdvMixNewsImg = itemView.sdvMixNewsImg!!
-        private val tvMixNewsDate = itemView.tvMixNewsDate!!
+    inner class MixNewsViewHolder(private val mBinding: ItemMixNewsBinding) :
+        RecyclerView.ViewHolder(mBinding.root) {
         fun bindToView(article: Articles) {
-            article.urlToImage?.also { loadImage(it, sdvMixNewsImg) }
-            article.publishedAt?.also { tvMixNewsDate.text = getDayFromDate(it) }
-            cvMixNewsContainer.setOnClickListener {
+            mBinding.item = article
+            mBinding.cvMixNewsContainer.setOnClickListener {
                 context.startActivity(
                     Intent(context, NewsDetailActivity::class.java).putExtra(
                         Constants.NEWS_DATA, article
