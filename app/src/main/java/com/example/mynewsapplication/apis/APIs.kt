@@ -10,7 +10,9 @@ interface APIs {
     @GET("v2/top-headlines")
     suspend fun getNewsHeadlinesCoroutine(
         @Query("country") country: String,
-        @Query("apiKey") apiKey: String
+        @Query("apiKey") apiKey: String,
+        @Query("page") page: Int,
+        @Query("pageSize") pageSize : Int
     ): Response<NewsHeadlines>
 
 }

@@ -25,7 +25,7 @@ class NewsRepo @Inject constructor(private val retrofit: Retrofit, private val c
         val apis: APIs = retrofit.create(APIs::class.java)
         job = CoroutineScope(Dispatchers.IO).launch {
             loading.postValue(true)
-            val response = apis.getNewsHeadlinesCoroutine("us", Constants.API_KEY)
+            val response = apis.getNewsHeadlinesCoroutine("us", Constants.API_KEY, 1, 100)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     _newsHeadlines.postValue(response.body()?.articles)
