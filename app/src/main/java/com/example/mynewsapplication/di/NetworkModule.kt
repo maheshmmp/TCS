@@ -1,4 +1,4 @@
-package com.example.mynewsapplication.di_hilt
+package com.example.mynewsapplication.di
 
 import com.example.mynewsapplication.utils.Constants
 import com.google.gson.Gson

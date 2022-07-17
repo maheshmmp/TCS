@@ -1,4 +1,4 @@
-package com.example.mynewsapplication.di_hilt
+package com.example.mynewsapplication.di
 
 import android.annotation.SuppressLint
 import android.content.Context
