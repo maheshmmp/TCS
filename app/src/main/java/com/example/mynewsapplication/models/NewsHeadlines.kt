@@ -17,7 +17,6 @@ data class NewsHeadlines(
     @SerializedName("totalResults")
     var totalResults: Int? = null,
 
-
     @SerializedName("articles")
     @TypeConverters(Convertors::class)
     var articles: List<Articles>? = null
