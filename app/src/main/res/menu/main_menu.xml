@@ -7,4 +7,11 @@
         android:icon="@drawable/ic_baseline_share_24"
         android:title="SHARE"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/favourite"
+        android:icon="@drawable/favourite_selector"
+        android:title="SHARE"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -9,9 +9,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.mynewsapplication.R
+import com.example.mynewsapplication.database.NewsDatabase
 import com.example.mynewsapplication.databinding.ActivityNewsDetailBinding
+import com.example.mynewsapplication.di.AppModule.context
 import com.example.mynewsapplication.models.Articles
 import com.example.mynewsapplication.utils.Constants
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_news_detail.*
 
 
@@ -69,6 +74,23 @@ class NewsDetailActivity : AppCompatActivity() {
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
                 sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSubject)
                 startActivity(Intent.createChooser(sharingIntent, "News"))
+                return true
+            }
+            R.id.favourite -> {
+                Observable.fromCallable {
+                    NewsDatabase.getDatabase(context).newsDao()
+                        .insertArticle( Articles(
+                            author = article.author,
+                            title = article.title,
+                            url = article.url,
+                            urlToImage = article.urlToImage,
+                            publishedAt = article.publishedAt,
+                            description = article.description,
+                            isSaved = true
+                        ))
+                }.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe()
                 return true
             }
             android.R.id.home ->{

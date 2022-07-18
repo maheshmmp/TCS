@@ -4,8 +4,12 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mynewsapplication.apis.APIs
+import com.example.mynewsapplication.database.NewsDatabase
 import com.example.mynewsapplication.models.Articles
 import com.example.mynewsapplication.utils.Constants
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import javax.inject.Inject
@@ -36,6 +40,25 @@ class NewsRepo @Inject constructor(private val retrofit: Retrofit, private val c
                 }
             }
         }
+    }
+
+    private fun saveArticleInDb(context: Context, data: Articles) {
+        val article =
+            Articles(
+                author = data.author,
+                title = data.title,
+                url = data.url,
+                urlToImage = data.urlToImage,
+                publishedAt = data.publishedAt,
+                description = data.description,
+                isSaved = data.isSaved
+            )
+        Observable.fromCallable {
+            NewsDatabase.getDatabase(context).newsDao()
+                .insertArticle(article)
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
     }
 
 }
